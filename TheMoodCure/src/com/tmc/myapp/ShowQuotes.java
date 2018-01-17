@@ -1,62 +1,369 @@
 package com.tmc.myapp;
-
 import java.util.ArrayList;
 import java.util.Random;
-
-import com.codename1.ui.Button;
 import com.codename1.ui.Component;
 import com.codename1.ui.Container;
 import com.codename1.ui.Font;
+import com.codename1.ui.FontImage;
 import com.codename1.ui.Form;
 import com.codename1.ui.Label;
-import com.codename1.ui.List;
-import com.codename1.ui.TextField;
-import com.codename1.ui.events.ActionEvent;
-import com.codename1.ui.events.ActionListener;
+import com.codename1.ui.TextArea;
+import com.codename1.ui.Toolbar;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.GridLayout;
-
+import com.codename1.ui.plaf.Border;
 public class ShowQuotes extends Form {
-	
-	private final Label l1,l2;
-    private final Container mainContainer;
-    private final Button backBtn;
-	
+	private Label l1;
+	private TextArea l2;
+	private final Container mainContainer;
+	private static MyApplication myapp = new MyApplication();
 	public ShowQuotes() {
-        this.setLayout(new BorderLayout());
-        mainContainer =new Container();
-        mainContainer.setLayout(new GridLayout(8,1));
-        l1 = new Label("The Mood Cure");
-        l1.getUnselectedStyle().setAlignment(Component.CENTER);
-        l1.getUnselectedStyle().setFgColor(-16777216);
-        Font l1_font = Font.createSystemFont(Font.FACE_SYSTEM, Font.STYLE_BOLD, Font.SIZE_LARGE);
-        l1.getUnselectedStyle().setFont(l1_font);
-        l2 = new Label(happyQuotes());
-        backBtn= new Button("Back");
-        backBtn.getUnselectedStyle().setFgColor(5542241);
-        
-        backBtn.addActionListener((ActionListener) (ActionEvent evt) -> {
-            MyApplication.hi.show();
-        });
-        
-        mainContainer.add(l1);
-        mainContainer.add(new Label());
-        mainContainer.add(l2);
-        mainContainer.add(new Label());
-        mainContainer.add(backBtn);
-        this.add(BorderLayout.NORTH, mainContainer);				
+		this.setLayout(new BorderLayout());
+		mainContainer = new Container();
+		mainContainer.setLayout(GridLayout.autoFit());
+		l1 = new Label("The Mood Cure");
+		l1.getAllStyles().setUnderline(true);
+		l1.getUnselectedStyle().setAlignment(Component.CENTER);
+		l1.getUnselectedStyle().setFgColor(-16777216);
+		Font l1_font = Font.createSystemFont(Font.FACE_SYSTEM, Font.STYLE_BOLD, Font.SIZE_LARGE);
+		l1.getUnselectedStyle().setFont(l1_font);
+		l2 = new TextArea();
+		l2.getAllStyles().setBorder(Border.createEmpty());
+		l2.getAllStyles().setBgColor(0X999999);
+		l2.getAllStyles().setBgTransparency(50);
+		if (myapp.wasHappyClicked()) {
+			l2.setText(happyQuotes());
+			myapp.setWasHappyClicked(false);
+		} else if (myapp.wasAngryClicked()) {
+			l2.setText(angryQuotes());
+			myapp.setWasAngryClicked(false);
+		} else if (myapp.wasConfusedClicked()) {
+			l2.setText(confusedQuotes());
+			myapp.setWasConfusedClicked(false);
+		} else if (myapp.wasSadClicked()) {
+			l2.setText(sadQuotes());
+			myapp.setWasSadClicked(false);
+		} else if (myapp.wasScaredClicked()) {
+			l2.setText(scaredQuotes());
+			myapp.setWasScaredClicked(false);
+		} else if (myapp.wasFlusteredClicked()) {
+			l2.setText(frustratedQuotes());
+			myapp.setWasFlusteredClicked(false);
+		}
+		l2.setEditable(false);
+		l2.getAllStyles().setAlignment(CENTER);
+		mainContainer.add(l1);
+		mainContainer.add(l2);
+		this.add(BorderLayout.NORTH, mainContainer);
+		Toolbar tb = getToolbar();
+		tb.addMaterialCommandToOverflowMenu("Home", FontImage.MATERIAL_HOME, e -> MyApplication.mainForm.show());
+		tb.addMaterialCommandToOverflowMenu("Exit", FontImage.MATERIAL_EXIT_TO_APP, e -> System.exit(0));
+		//tb.addMaterialCommandToOverflowMenu("Journal",FontImage.MATERIAL_ACCOUNT_CIRCLE, e -> Journal.start());
 	}
-	
+	/**
+	 * These are quotes that will inspire people, meant for people feeling
+	 * "happy".
+	 * 
+	 * @return
+	 */
 	public String happyQuotes() {
 		Random r = new Random();
 		ArrayList<String> happyQuotes = new ArrayList<String>();
-		happyQuotes.add("The pursuit of happiness.");
-		happyQuotes.add("Be happy.");
-		happyQuotes.add("God Loves You.");
-		happyQuotes.add("Living is happiness.");
-		happyQuotes.add("Everything will get better.");
-		return happyQuotes.get(r.nextInt(5));
+		happyQuotes.add("If you can dream it, you can do it. \n-Walt Disney");
+		happyQuotes.add("Where there is a will, there's a way. \n-Pauline Kael");
+		happyQuotes.add("Aim for the moon. If you miss, you may hit a star. \n-W. Clement Stone");
+		happyQuotes.add("A man's measure is his will. \n-Ali Ibn Talib");
+		happyQuotes.add("Whatever the mind of man can conceive and believe, it can achieve. \n-Napoleon Hill");
+		happyQuotes.add("Strive not to be a success, but rather to be of value. \n-Albert Einstein");
+		happyQuotes.add("I attribute my success to this: I never gave or took any excuse. \n-Florence Nightingale");
+		happyQuotes.add("Your time is limited, so don't waste it living someone else's life. \n-Steve Jobs");
+		happyQuotes.add("You can never cross the ocean until you have the courage to lose sight of the shore. \n-Christopher Columbus");
+		happyQuotes.add("People often say that motivation doesn't last. Well, neither does bathing. That's why we recommend it daily. \n-Zig Ziglar");
+		happyQuotes.add("Good actions are a guard against the blows of adversity. \n-Abu Bakr Siddiq");
+		happyQuotes.add("The quickest way to double your money is to fold it over and put it back in your pocket. \n-Will Rogers");
+		happyQuotes.add("Nurture your mind with great thoughts. To believe in the heroic makes heroes. \n-Benjamin Disraeli");
+		happyQuotes.add("Luck is a dividend of sweat. The more you sweat, the luckier you get. \n-Ray Kroc");
+		happyQuotes.add("Keep your eyes on the stars and your feet on the ground. \n-Theodore Roosevelt");
+		happyQuotes.add("Life's too mysterious to take too serious. \n-Mary Engelbreit");
+		happyQuotes.add("Happiness is an inside job. \n-Anonymous");
+		happyQuotes.add("There is no elevator to success - you have to take the stairs. \n-Anonymous");
+		happyQuotes.add("You can be the ripest, juiciest peach in the world and there's still going to be someone who hates peaches. \n-Dita Von Teese");
+		happyQuotes.add("Love all, trust a few, do wrong to none. \n-William Shakespeare");
+		happyQuotes.add("Let your smile change the world, but don't let the world change your smile. \n-Anonymous");
+		happyQuotes.add("Be the reason someone smiles today. \n-Anonymous");
+		happyQuotes.add("Do something today that your future self will thank you for. \n-Anonymous");
+		happyQuotes.add("Kindness is free, sprinkle that stuff everyday. \n-Anonymous");
+		happyQuotes.add("Do more of what makes you happy. \n-Anonymous");
+		happyQuotes.add("Nothing is impossible, the word itself says, 'I am possible'! \n-Audrey Hepburn");
+		happyQuotes.add("I've learned that people will forget what you said, people will forget what you did, but people will never forget how you made them feel. \n-Maya Angelou");
+		happyQuotes.add("The only way to do great work is to love what you do. \n-Steve Jobs");
+		happyQuotes.add("When I was 5 years old, my mother always told me that happiness was the key to life. When I went to school, they asked me what I wanted to be when I grew up. I wrote down 'happy'. They told me I didn't understand the assignment, and I told them they didn't understand life. \n-John Lennon");
+		happyQuotes.add("I alone cannot change the world, but I can cast a stone across the water to create many ripples. \n-Mother Teresa");
+		happyQuotes.add("If you want to achieve greatness stop asking for permission. \n-Anonymous");
+		happyQuotes.add("Things work out best for those who make the best of how things work out. \n-John Wooden");
+		happyQuotes.add("If you are not willing to risk the usual you will have to settle for the ordinary. \n-Jim Rohn");
+		happyQuotes.add("All our dreams can come true if we have the courage to pursue them. \n-Walt Disney ");
+		happyQuotes.add("If you do what you always did, you will get what you always got. \n-Anonymous");
+		happyQuotes.add("Whenever you see a successful person you only see the public glories, never the private sacrifices to reach them. \n-Vaibhav Shah");
+		happyQuotes.add("Great minds discuss ideas; average minds discuss events; small minds discuss people. \n-Eleanor Roosevelt");
+		happyQuotes.add("The whole secret of a successful life is to find out what is one's destiny to do, and then do it. \n-Henry Ford");
+		happyQuotes.add("The meaning of life is to find your gift. The purpose of life is to give it away. \n-Anonymous");
+		happyQuotes.add("Love the poor and let them come to you and Allah will draw you near to Himself.  \n-Sahih Bukhari");
+		happyQuotes.add("Allah is sufficient for us. \n-Quran (3:173)");
+		happyQuotes.add("If you are grateful, I will give you more. \n-Quran (14:7)");
+		happyQuotes.add("Whoever believes in Allah, he will guide his heart. \n-Quran (64:11)");
+		happyQuotes.add("My success comes only through Allah. In him I trust and to him I turn. \n-Quran (11:88)");
+		return happyQuotes.get(r.nextInt(43));
 	}
-	
-
+	public String sadQuotes() {
+		Random r = new Random();
+		ArrayList<String> sadQuotes = new ArrayList<String>();
+		sadQuotes.add("Pain is temporary. Quitting lasts forever. \n-Lance Armstrong");
+		sadQuotes.add("Look at the sparrows; they do not know what they will do in the next moment. Let us literally live from moment to moment. \n-Mahatma Gandhi");
+		sadQuotes.add("Be thankful for what you have, not what you've lost.");
+		sadQuotes.add("It's OK to not be OK, as long as you don't stay that way. \n-Anonymous");
+		sadQuotes.add("Plant your garden and decorate your own soul, instead of waiting for someone to bring you flowers. \n-Jose Luis Borges");
+		sadQuotes.add("Don't sweat the petty things and don't pet the sweaty things. \n-George Carlin");
+		sadQuotes.add("Never cowardly or cruel. Never give up, never give in. \n-Doctor Who");
+		sadQuotes.add("To be happy, we must not be too concerned with others. \n-Albert Camus");
+		sadQuotes.add("There is only one way to happiness and that is to cease worrying about things which are beyond the power of our will. \n-Epictetus");
+		sadQuotes.add("Sometimes your joy is the source of your smile, but sometimes your smile can be the source of your joy. \n-Thich Nhat Hanh");
+		sadQuotes.add("Happiness depends upon ourselves. \n-Aristotle");
+		sadQuotes.add("It is more fitting for a man to laugh at life than to lament over it. \n-Seneca");
+		sadQuotes.add("Happy he who learns to bear what he cannot change. \n-Friedrich Schiller");
+		sadQuotes.add("Be happy with what you have. Be excited about what you want. \n-Alan Cohen");
+		sadQuotes.add("Tension is who you think you should be, relaxation is who you are. \n-Chinese Proverb");
+		sadQuotes.add("You cannot judge what should bring others joy, and others cannot judge what should bring you joy. \n-Alan Cohen");
+		sadQuotes.add("Happiness is not a station you arrive at, but a manner of traveling. \n-Margaret Lee Runbeck");
+		sadQuotes.add("Focus on the journey, not the destination. Joy is found not in finishing an activity but in doing it. \n-Greg Anderson");
+		sadQuotes.add("To be content means that you realize you contain what you seek. \n-Alan Cohen");
+		sadQuotes.add("True happiness is not attained through self-gratification, but through fidelity to a worthy purpose. \n-Helen Keller");
+		sadQuotes.add("If you want others to be happy, practice compassion. If you want to be happy, practice compassion. \n-Dalai Lama");
+		sadQuotes.add("Happiness is not having what you want. It is appreciating what you have. \n-Unknown");
+		sadQuotes.add("Success is getting what you want. Happiness is wanting what you get. \n-Dale Carnegie");
+		sadQuotes.add("Once you do something you love, you never have to work again. \n-Willie Hill");
+		sadQuotes.add("Happiness is where we find it, but very rarely where we seek it. \n-J. Petit Senn");
+		sadQuotes.add("To handle yourself, use your head; to handle others, use your heart. \n-Eleanor Roosevelt ");
+		sadQuotes.add("Twenty years from now you will be more disappointed by the things that you didn't do than by the ones you did do, so throw off the bowlines, sail away from safe harbor, catch the trade winds in your sails. Explore, Dream, Discover. \n-Mark Twain");
+		sadQuotes.add("It is during our darkest moments that we must focus to see the light. \n-Aristotle Onassis");
+		sadQuotes.add("If you want to lift yourself up, lift up someone else. \n-Booker T. Washington");
+		sadQuotes.add("When one door of happiness closes, another opens, but often we look so long at the closed door that we do not see the one that has been opened for us. \n-Helen Keller");
+		sadQuotes.add("How wonderful it is that nobody need wait a single moment before starting to improve the world. \n-Anne Frank");
+		sadQuotes.add("If you're going through hell keep going. \n-Winston Churchill");
+		sadQuotes.add("What seems to us as bitter trials are often blessings in disguise. \n-Oscar Wilde");
+		sadQuotes.add("Life's not about finding yourself. Life's about creating yourself. \n-Lolly Daskal");
+		sadQuotes.add("I find that the harder I work, the more luck I seem to have. \n-Thomas Jefferson");
+		sadQuotes.add("If you want to achieve excellence, you can get there today. As of this second, quit doing less-than-excellent work. \n-Thomas J. Watson");
+		sadQuotes.add("Courage is resistance to fear, mastery of fear - not absence of fear. \n-Mark Twain");
+		sadQuotes.add("People often say that motivation doesn't last. Well, neither does bathing - that's why we recommend it daily. \n-Zig Ziglar");
+		sadQuotes.add("The road to success and the road to failure are almost exactly the same. \n-Colin R. Davis");
+		sadQuotes.add("Verily, after every hardship comes ease. \n-Quran (94:6)");
+		sadQuotes.add("Allah does not burden a soul beyond that it can bear.. \n-Quran(2:286)");
+		sadQuotes.add("Do not let their words sadden you. \n-Quran (10:65)");
+		sadQuotes.add("And your lord says, call upon me; I will respond to you. \n-Quran (40:60)");
+		sadQuotes.add("Did he not find you lost and give you guidance. \n-Quran(93:7)");
+		sadQuotes.add("And whoever keeps his duty to Allah he makes matters easier for him. \n-Quran (65:4)");
+		sadQuotes.add("When my servants ask you about me, I am always near. I answer their prayers when they pray to me. \n-Quran (2:186)");
+		sadQuotes.add("My lord, put my heart at ease and make my task easy for me. \n-Quran (20:25-26)");
+		return sadQuotes.get(r.nextInt(46));
+	}
+	public String angryQuotes() {
+		Random r = new Random();
+		ArrayList<String> angryQuotes = new ArrayList<String>();
+		angryQuotes.add("Get mad, then get over it. \n- Colin Powell");
+		angryQuotes.add("In 20 years, you probably won't even remember this. \n- Anonymous");
+		angryQuotes.add("You can get angry, you can get even, or you can get ahead. \n-Jeffrey Fry");
+		angryQuotes.add("There is no time to be angry, always be busy with love. \n-Debasish Mridha");
+		angryQuotes.add("Your smile can heal thousands; but your anger can kill millions. Your ‘hand-shake' can encourage tens of people while your 'finger-pointing' can turn ten thousands away from you! \n-Israelmore Ayivor");
+		angryQuotes.add("An angry man rarely stops to let facts get in the way of his fury. \n- Nikki Sex ");
+		angryQuotes.add("Life is so short. The only person you hurt when you stay angry or hold grudges is you. Forgive everyone, including yourself. \n-Tom Giaquinto");
+		angryQuotes.add("It is when you are angry that you must watch how you talk. \n- Chaim Potok");
+		angryQuotes.add("Don't let anger cloud what's fair. \n-Hamzah Quraishi");
+		angryQuotes.add("Holding onto anger is like grasping a hot coal with the intent of throwing it at someone else; you are the one who gets burned. \n- Buddha");
+		angryQuotes.add("While seeking revenge, dig two graves - one for yourself. \n- Douglas Horton");
+		angryQuotes.add("I shall allow no man to belittle my soul by making me hate him. \n- Booker T. Washington");
+		angryQuotes.add("Holding onto anger is like drinking poison and expecting the other person to die. \n- Buddha");
+		angryQuotes.add("There are two things a person should never be angry at; what they can help, and what they cannot. \n- Plato");
+		angryQuotes.add("Anger is a valid emotion. It's only bad when it takes control and makes you do things you don't want to do. \n- Ellen Hopkins");
+		angryQuotes.add("The best fighter is never angry. \n- Lao Tzu");
+		angryQuotes.add("Speak when you are angry and you will make the best speech you will ever regret. \n- Ambrose Bierce");
+		angryQuotes.add("The greatest remedy for anger is delay. \n- Thomas Paine");
+		angryQuotes.add("Do not let your anger lead to hatred, as you will hurt yourself more than you would the other. \n- Stephen Richards");
+		angryQuotes.add("Sometimes ... it took seconds to control your anger, only to avoid the state of eternal feud.\n- Toba Beta");
+		angryQuotes.add("If people keep stepping on you, wear a pointy hat. \n- Joyce Rachelle");
+		angryQuotes.add("Laughter is much better than anger. \n- Wayne Gerard Trotman");
+		angryQuotes.add("For every minute you are angry you lose sixty seconds of happiness. \n-Ralph Waldo Emerson");
+		angryQuotes.add("Hanging onto resentment is letting someone you despise live rent-free in your head. \n-Esther Lederer");
+		angryQuotes.add("People won't have time for you if you are always angry and complaining. \n-Stephen Hawking");
+		angryQuotes.add("Forgiveness does not change the past, but it does enlarge the future. \n-Paul Boese");
+		angryQuotes.add("Everything has beauty, but not everyone can see. \n- Confucius");
+		angryQuotes.add("If you don't value your time, neither will others. Stop giving away your time and talents- start charging for it. \n-Kim Garst");
+		angryQuotes.add("Don't raise your voice, improve your argument. \n- Anonymous");
+		angryQuotes.add("Blessed are those who can give without remembering and take without forgetting. \n- Anonymous");
+		angryQuotes.add("Nothing in the world is more common than unsuccessful people with talent. \n- Anonymous");
+		angryQuotes.add("Knowledge is being aware of what you can do. Wisdom is knowing when not to do it. \n- Anonymous");
+		angryQuotes.add("Your problem isn't the problem. Your reaction is the problem. \n- Anonymous");
+		angryQuotes.add("You can do anything, but not everything. \n- Anonymous");
+		angryQuotes.add("We become what we think about most of the time, and that's the strangest secret. \n-Earl Nightingale");
+		angryQuotes.add("Whenever you find yourself on the side of the majority, it is time to pause and reflect. \n-Mark Twain");
+		angryQuotes.add("Prophet muhammad said: Speak a good word or remain silent. \n-Sahih Bukhari");
+		angryQuotes.add("As for he who is patient and forgives then that is an indication of strength. \n-Quran (42:43)");
+		angryQuotes.add("Hold firmly to the rope of Allah, all of you and do not be divided. \n-Quran (3:103)");
+		angryQuotes.add("Do not speak ill of one another; nor use offensive nicknames for one another. \n-Quran (49:11)");
+		angryQuotes.add("My lord, put my heart at ease and make my task easy for me. \n-Quran (20:25-26)");
+		return angryQuotes.get(r.nextInt(40));
+	}
+	public String confusedQuotes() {
+		Random r = new Random();
+		ArrayList<String> confusedQuotes = new ArrayList<String>();
+		confusedQuotes.add("Winning isn't everything, but wanting to win is. \n-Vince Lombardi");
+		confusedQuotes.add("The most common way people give up their power is by thinking they don't have any. \n-Alice Walker");
+		confusedQuotes.add("Whether you think you can or you think you can't, you're right. \n-Henry Ford");
+		confusedQuotes.add("The most difficult thing is the decision to act, the rest is merely tenacity. \n-Amelia Earhart");
+		confusedQuotes.add("You miss 100% of the shots you don't take. \n-Wayne Gretzky");
+		confusedQuotes.add("What's meant to be will always find a way. \n-Trisha Yearwood");
+		confusedQuotes.add("Do you want to know who you are? Don't ask. Act! Action will delineate and define you. \n-Thomas Jefferson");
+		confusedQuotes.add("There are years that ask questions and years that answer. \n-Zora Neale Hurston");
+		confusedQuotes.add("Do not go where the path may lead, go instead where there is no path and leave a trail. \n-Amy Chou");
+		confusedQuotes.add("Run away from greatness, and greatness will follow you. \n-Abu Bakr Siddiq");
+		confusedQuotes.add("Even if you're on the right track, you'll get run over if you just sit there. \n-Will Rogers");
+		confusedQuotes.add("When I hear somebody sigh, ‘Life is hard,' I am always tempted to ask, ‘Compared to what? \n-Sydney Harris");
+		confusedQuotes.add("The real opportunity for success lies within the person and not in the job. \n-Zig Ziglar");
+		confusedQuotes.add("When I let go of what I am, I become what I might be. \n-Lao Tzu");
+		confusedQuotes.add("Be who you are and say what you feel, because those who mind don't matter and those who matter don't mind. \n-Dr. Seuss");
+		confusedQuotes.add("Never be bullied into silence. Never allow yourself to be made a victim. Accept no one's definition of your life; define yourself. \n-Harvey Fierstein");
+		confusedQuotes.add("The woman who follows the crowd will usually go no further than the crowd. The woman who walks alone is likely to find herself in places no one has been before. \n-Albert Einstein");
+		confusedQuotes.add("Those who don't believe in magic will never find it. \n-Roald Dahl");
+		confusedQuotes.add("Do not set yourself on fire in order to keep others warm. \n-Anonymous");
+		confusedQuotes.add("It's supposed to be hard. If it were easy, everyone would do it. \n-Jimmy Dugan");
+		confusedQuotes.add("Sometimes when things are falling apart they may actually be falling in place. \n-Anonymous");
+		confusedQuotes.add("If it doesn't open... maybe it's not your door. \n-Anonymous");
+		confusedQuotes.add("If it makes you happy, no one else's opinion should matter. \n-Anonymous");
+		confusedQuotes.add("Choose people who choose you. \n-Anonymous");
+		confusedQuotes.add("Life is a gift. Wake up everyday and realize that. \n-Anonymous");
+		confusedQuotes.add("I can't change the direction of the wind, but I can adjust my sails to always reach my destination. \n-Jimmy Dean");
+		confusedQuotes.add("Do or do not. There is no try. \n-Yoda");
+		confusedQuotes.add("I am not a product of my circumstances. I am a product of my decisions. \n-Stephen Covey");
+		confusedQuotes.add("Change your thoughts and you change your world. \n-Norman Vincent Peale");
+		confusedQuotes.add("Build your own dreams, or someone else will hire you to build theirs. \n-Farrah Gray");
+		confusedQuotes.add("You can't use up creativity. The more you use, the more you have. \n-Maya Angelou");
+		confusedQuotes.add("A truly rich man is one whose children run into his arms when his hands are empty. \n-Unknown");
+		confusedQuotes.add("I have been impressed with the urgency of doing. Knowing is not enough; we must apply. Being willing is not enough; we must do. \n-Leonardo da Vinci");
+		confusedQuotes.add("Certain things catch your eye, but pursue only those that capture the heart. \n-Ancient Indian Proverb");
+		confusedQuotes.add("The only person you are destined to become is the person you decide to be. \n-Ralph Waldo Emerson");
+		confusedQuotes.add("Nothing will work unless you do. \n-Maya Angelou");
+		confusedQuotes.add("Good things come to people who wait, but better things come to those who go out and get them. \n-Anonymous");
+		confusedQuotes.add("The distance between insanity and genius is measured only by success. \n-Bruce Feirstein");
+		confusedQuotes.add("When you stop chasing the wrong things you give the right things a chance to catch you. \n-Lolly Daskal");
+		confusedQuotes.add("What's the point of being alive if you don't at least try to do something remarkable. \n-Anonymous");
+		confusedQuotes.add("So flee to Allah. \n-Quran (51:50)");
+		confusedQuotes.add("Indeed, prayer prohibits immorality and wrongdoing. \n-Quran(29:45)");
+		confusedQuotes.add("Prophet Muhammad said: The deeds most loved by Allah are those done regularly, even if they are small. \n-Sahih Muslim and Sahih Bukhari");
+		confusedQuotes.add("My lord give me wisdom and admit me among the righteous. \n-Quran (26:83)");
+		confusedQuotes.add("Praise be to Allah. He will show you his signs and you will recognise them. \n-Quran (27:93)");
+		confusedQuotes.add("And he found you lost and guided you. \n-Quran (93:7)");
+		return confusedQuotes.get(r.nextInt(45));
+	}
+	public String frustratedQuotes() {
+		Random r = new Random();
+		ArrayList<String> frustratedQuotes = new ArrayList<String>();
+		frustratedQuotes.add("Laughter and tears are both responses to frustration and exhaustion. I myself prefer to laugh, since there is less cleaning do to do afterward. \n-Kurt Vonnegut");
+		frustratedQuotes.add("The only thing more frustrating than slanderers is those foolish enough to listen to them. \n-Criss Jami");
+		frustratedQuotes.add("It's a lack of clarity that creates chaos and frustration. Those emotions are poison to any living goal. \n-Steve Maraboli");
+		frustratedQuotes.add("Frustration is commonly the difference between what you would like to be and what you are willing to sacrifice to become what you would like to be. \n-Anonymous");
+		frustratedQuotes.add("When you are angry or frustrated, what comes out? Whatever it is, it's a good indication of what you're made of. \n-Jackson Brown");
+		frustratedQuotes.add("In times of great stress or adversity, it's always best to keep busy, to plow your anger and your energy into something positive. \n-Lee Lacocca");
+		frustratedQuotes.add("Frustration is the wet nurse of violence. \n-David Abrahamsen");
+		frustratedQuotes.add("Learn to say NO without explaining yourself. \n-Anonymous");
+		frustratedQuotes.add("The best way to pay for a lovely moment is to enjoy it.\n-Richard Bach");
+		frustratedQuotes.add("Stand up to your obstacles and do something about them. You will find they haven't half the strength you they have. \n-Norman Vincent Peale");
+		frustratedQuotes.add("The greatest weapon against stress is our ability to choose one thought over another. \n-William James");
+		frustratedQuotes.add("Your mind will answer most questions if you learn to relax and wait for the answers. \n-William S. Burroughs");
+		frustratedQuotes.add("If the problem can be solved why worry? If the problem cannot be solved, worrying will do you no good. \n-rantideva");
+		frustratedQuotes.add("Adopting the right attitude can convert a negative stress into a positive one.\n-Hans Selye");
+		frustratedQuotes.add("The greatest mistake you can make in life is to be continually fearing you will make one. \n-Elbert Hubbard");
+		frustratedQuotes.add("Slow down and everything you are chasing will come around and catch you. \n-John De Paola");
+		frustratedQuotes.add("If you treat every situation as a life and death matter, you'll die a lot of times. \n-Dean Smith");
+		frustratedQuotes.add("Do not anticipate trouble or worry about what may never happen. Keep in the sunlight. \n-Benjamin Franklin");
+		frustratedQuotes.add("For fast-acting relief, try slowing down. \n-Lily Tomlin");
+		frustratedQuotes.add("Tell your heart that the fear of suffering is worse than the suffering itself. \n-Paulo Coelho");
+		frustratedQuotes.add("Sometimes when people are under stress, they hate to think, and it's the time when they most need to think. \n-Bill Clinton");
+		frustratedQuotes.add("Love yourself enough to set boundaries. Your time and energy are precious. \n-Anonymous");
+		frustratedQuotes.add("Don't stress the could haves, if it should have, it would have. \n-Anonymous");
+		frustratedQuotes.add("Worrying is like a rocking chair. it gives you something to do but it doesn't get you anywhere. \n-English proverb");
+		frustratedQuotes.add("A year from now, everything you're frustrated about won't even matter. \n-Anonymous");
+		frustratedQuotes.add("Perfection is not attainable, but if we chase perfection we can catch excellence. \n-Vince Lombardi");
+		frustratedQuotes.add("Life is 10% what happens to me and 90% of how I react to it. \n-Charles Swindoll");
+		frustratedQuotes.add("If you look at what you have in life, you'll always have more. If you look at what you don't have in life, you'll never have enough. \n-Oprah Winfrey");
+		frustratedQuotes.add("Believe you can and you're halfway there. \n-Theodore Roosevelt");
+		frustratedQuotes.add("I've missed more than 9000 shots in my career. I've lost almost 300 games. 26 times I've been trusted to take the game winning shot and missed. I've failed over and over and over again in my life. And that is why I succeed. \n-Michael Jordan");
+		frustratedQuotes.add("When everything seems to be going against you, remember that the airplane takes off against the wind, not with it. \n-Henry Ford");
+		frustratedQuotes.add("Don't judge each day by the harvest you reap but by the seeds that you plant. \n-Robert Louis Stevenson");
+		frustratedQuotes.add("Remember that not getting what you want is sometimes a wonderful stroke of luck. \n-Dalai Lama");
+		frustratedQuotes.add("A person who never made a mistake never tried anything new. \n-Albert Einstein");
+		frustratedQuotes.add("Limitations live only in our minds. But if we use our imaginations, our possibilities become limitless. \n-Jamie Paolinetti");
+		frustratedQuotes.add("We can't help everyone, but everyone can help someone. \n-Ronald Reagan");
+		frustratedQuotes.add("What we achieve inwardly will change outer reality. \n-Plutarch");
+		frustratedQuotes.add("Success is walking from failure to failure without loss of enthusiasm. \n-Winston Churchill");
+		frustratedQuotes.add("Opportunities don't happen, you create them. \n-Chris Grosser");
+		frustratedQuotes.add("You have not failed. You've just found 10,000 ways that won't work. \n-Thomas A. Edison");
+		frustratedQuotes.add("Develop success from failures. Discouragement and failure are two of the surest stepping stones to success. \n-Dale Carnegie");
+		frustratedQuotes.add("Allah gives us trials and hardships not to make us weak, but strengthens us through them. \n");
+		frustratedQuotes.add("No one besides Allah can rescue a soul from hardship. \n Quran(53:58)");
+		frustratedQuotes.add("Verily, after every hardship comes ease. \n-Quran (94:6)");
+		frustratedQuotes.add("Allah does not burden a soul beyond that it can bear.. \n-Quran(2:286)");
+		frustratedQuotes.add("The help of Allah is near. \n-Quran (02:214)");
+		frustratedQuotes.add("Remember Allah frequently so that you may prosper. \n-Quran (62:10)");
+		frustratedQuotes.add("And whoever keeps his duty to Allah he makes matters easier for him. \n-Quran (65:4)");
+		frustratedQuotes.add("When my servants ask you about me, I am always near. I answer their prayers when they pray to me. \n-Quran (2:186)");
+		return frustratedQuotes.get(r.nextInt(48));
+	}
+	public String scaredQuotes() {
+		Random r = new Random();
+		ArrayList<String> scaredQuotes = new ArrayList<String>();
+		scaredQuotes.add("Be not afraid of life. Believe that life is worth living, and your belief will help create the fact. \n-William James");
+		scaredQuotes.add("No one can make you feel inferior without your consent. \n-Eleanor Roosevelt");
+		scaredQuotes.add("It's not about how hard you can hit; it's about how hard you can get hit and keep moving forward. \n-Rocky Balboa");
+		scaredQuotes.add("Nothing in life is to be feared; it is only to be understood. Now is the time to understand more so that we may fear less. \n-Marie Curie");
+		scaredQuotes.add("Do what you feel in your heart to be right, for you'll be criticized anyway. \n-Eleanor Roosevelt");
+		scaredQuotes.add("Hope is the only thing stronger than fear. \n-Anonymous");
+		scaredQuotes.add("Think like a queen. A queen is not afraid to fail. Failure is another stepping-stone to greatness. \n-Oprah Winfrey");
+		scaredQuotes.add("It's lack of faith that makes people afraid of meeting challenges, and I believed in myself. \n-Muhammad Ali ");
+		scaredQuotes.add("Just try new things. Don't be afraid. Step out of your comfort zones and soar, all right? \n-Michelle Obama");
+		scaredQuotes.add("A lot of people are afraid of heights. Not me, I am afraid of widths. \n-Steven Wright");
+		scaredQuotes.add("If you are afraid to fail, then you are probably going to fail. \n-Kobe Bryant");
+		scaredQuotes.add("Don't be afraid to ask for help. \n-Michelle Obama");
+		scaredQuotes.add("If you go around being afraid, you're never going to enjoy life. You have only one chance, so you've got to have fun. \n-Lindsey Vonn");
+		scaredQuotes.add("Don't be afraid to give up the good to go for the great. \n-John D. Rockefeller");
+		scaredQuotes.add("Don't be afraid to express yourself through passion. \n-Chanel Iman");
+		scaredQuotes.add("An essential aspect of creativity is not being afraid to fail. \n-Edwin Land");
+		scaredQuotes.add("Always do what you're afraid to do. \n-E. Lockhart");
+		scaredQuotes.add("Don't be afraid of being scared. To be afraid is a sign of common sense. Only complete idiots are not afraid of anything. \n-Carlos Ruiz Zafón");
+		scaredQuotes.add("When you're scared, you stay as you are! \n-Stephen Richards");
+		scaredQuotes.add("Maybe ever'body in the whole damn world is scared of each other. \n-John Steinbeck");
+		scaredQuotes.add("Scary with you is better than scary without you. \n-Tamora Pierce");
+		scaredQuotes.add("If you don't know learn how to be scared, you'll never really learn how to be brave. \n-Simon Holt");
+		scaredQuotes.add("It's okay to be crazy and scared and brave at the same time! \n-Kelly Epperson");
+		scaredQuotes.add("There is no illusion greater than fear. \n-Lao Tzu");
+		scaredQuotes.add("Fear can make a moth seem the size of a bull elephant. \n-Stephen Richards");
+		scaredQuotes.add("Too many of us are not living our dreams because we are living our fears. \n-Les Brown");
+		scaredQuotes.add("The question isn't who is going to let me; it's who is going to stop me. \n-Ayn Rand");
+		scaredQuotes.add("I have learned over the years that when one's mind is made up, this diminishes fear. \n-Rosa Parks");
+		scaredQuotes.add("Everything you've ever wanted is on the other side of fear. \n-George Addair");
+		scaredQuotes.add("We can easily forgive a child who is afraid of the dark; the real tragedy of life is when men are afraid of the light. \n-Plato");
+		scaredQuotes.add("To live a creative life, we must lose our fear of being wrong. \n-Anonymous");
+		scaredQuotes.add("A successful man is one who can lay a firm foundation with the bricks others have thrown at him. \n-David Brinkley");
+		scaredQuotes.add("Do one thing every day that scares you. \n-Anonymous");
+		scaredQuotes.add("There are two types of people who will tell you that you cannot make a difference in this world: those who are afraid to try and those who are afraid you will succeed. \n-Ray Goforth");
+		scaredQuotes.add("All progress takes place outside the comfort zone. \n-Michael John Bobak");
+		scaredQuotes.add("Verily, the good deeds remove the bad deeds \n-Quran (11:114)");
+		scaredQuotes.add("Sufficient for me is Allah. \n-Quran (9:129)");
+		scaredQuotes.add("Put your trust in Allah... \n-Quran (5:23)");
+		scaredQuotes.add("Don't fear, I am with you. \n-Quran (20:46)");
+		scaredQuotes.add("Indeed my lord is near and responsive. \n-Quran (11:61)");
+		scaredQuotes.add("When my servants ask you about me, I am always near. I answer their prayers when they pray to me. \n-Quran (2:186)");
+		scaredQuotes.add("Do not despair the mercy of Allah. Indeed Allah forgives all sins. \n-Quran (39:53)");
+		scaredQuotes.add("My lord, put my heart at ease and make my task easy for me. \n-Quran (20:25-26)");
+		return scaredQuotes.get(r.nextInt(42));
+	}
 }
